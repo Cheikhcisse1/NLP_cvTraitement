@@ -1,54 +1,58 @@
 """
 preprocessing/ner.py
 Extraction d'entités nommées depuis le texte d'un CV avec spaCy.
-Identifie : personnes, organisations, lieux, dates, compétences (règles custom).
+Compatible fr_core_news_sm (Streamlit Cloud) et fr_core_news_sm (local).
 """
 from __future__ import annotations
 
 import re
-from functools import lru_cache
-from typing import Optional
-
 from loguru import logger
 
 
-# ── Chargement paresseux du modèle ───────────────────────────────────────────
-
-@lru_cache(maxsize=1)
-def _get_nlp():
-    try:
-        import spacy
-        nlp = spacy.load("fr_core_news_lg")
-        logger.info("Modèle spaCy fr_core_news_lg chargé")
-        return nlp
-    except OSError:
-        logger.warning("fr_core_news_lg non trouvé — NER désactivée")
-        return None
-
-
-# ── Patterns compétences techniques (règles custom) ─────────────────────────
+# ── Patterns compétences techniques (regex pur Python — sans spaCy REGEX) ────
 
 _TECH_PATTERN = re.compile(
-    r"\b(Python|Java(?:Script)?|TypeScript|C\+\+|C#|Go|Rust|PHP|Ruby|Swift|Kotlin"
-    r"|React|Angular|Vue|Node\.js|Django|Flask|FastAPI|Spring|Laravel"
-    r"|TensorFlow|PyTorch|scikit.learn|Keras|HuggingFace|BERT|GPT"
+    r"\b(Python|JavaScript|TypeScript|Java|C\+\+|Go|Rust|PHP|Ruby|Swift|Kotlin"
+    r"|React|Angular|Vue|NodeJS|Node\.js|Django|Flask|FastAPI|Spring|Laravel"
+    r"|TensorFlow|PyTorch|Scikit.learn|Keras|HuggingFace|BERT|GPT|LLM"
     r"|SQL|PostgreSQL|MySQL|MongoDB|Redis|Elasticsearch|Cassandra"
-    r"|Docker|Kubernetes|Terraform|Ansible|Jenkins|GitLab CI|GitHub Actions"
-    r"|AWS|Azure|GCP|Linux|Git|REST|GraphQL|gRPC"
-    r"|NLP|ML|Deep Learning|Machine Learning|Data Science|LLM)\b",
-    re.IGNORECASE
+    r"|Docker|Kubernetes|Terraform|Ansible|Jenkins|Git"
+    r"|AWS|Azure|GCP|Linux|REST|GraphQL|gRPC"
+    r"|NLP|Machine Learning|Deep Learning|Data Science|MLOps)\b",
+    re.IGNORECASE,
 )
 
 
+# ── Chargement du modèle spaCy (essaie sm puis lg) ───────────────────────────
+
+_nlp_cache = None
+
+def _get_nlp():
+    global _nlp_cache
+    if _nlp_cache is not None:
+        return _nlp_cache
+
+    import spacy
+
+    for model in ("fr_core_news_sm", "fr_core_news_md", "fr_core_news_lg"):
+        try:
+            _nlp_cache = spacy.load(model)
+            logger.info(f"Modèle spaCy chargé : {model}")
+            return _nlp_cache
+        except OSError:
+            continue
+
+    logger.warning("Aucun modèle spaCy français trouvé — NER désactivée")
+    return None
+
+
+# ── Extraction ────────────────────────────────────────────────────────────────
+
 def extract_entities(text: str) -> dict:
     """
-    Extrait toutes les entités utiles d'un CV.
-    Retourne un dict avec :
-      - persons       : noms détectés
-      - organizations : entreprises / écoles
-      - locations     : villes / pays
-      - dates         : périodes / années
-      - skills_tech   : compétences techniques (regex)
+    Extrait les entités d'un CV.
+    - skills_tech   : regex Python (toujours actif, indépendant de spaCy)
+    - persons / organizations / locations / dates : spaCy NER
     """
     entities: dict = {
         "persons":       [],
@@ -58,16 +62,21 @@ def extract_entities(text: str) -> dict:
         "skills_tech":   [],
     }
 
-    # Compétences techniques via regex (plus fiable que NER pour les sigles)
-    tech = _TECH_PATTERN.findall(text)
-    entities["skills_tech"] = list({t.lower() for t in tech})
+    # Compétences techniques via regex pur (fiable, rapide, sans spaCy)
+    matches = _TECH_PATTERN.findall(text)
+    entities["skills_tech"] = sorted({m.lower() for m in matches})
 
-    # NER spaCy
+    # NER spaCy pour personnes / orgs / lieux / dates
     nlp = _get_nlp()
     if nlp is None:
         return entities
 
-    doc = nlp(text[:50_000])  # limite pour la RAM
+    try:
+        doc = nlp(text[:40_000])   # limite mémoire pour Streamlit Cloud
+    except Exception as e:
+        logger.warning(f"spaCy NER échouée : {e}")
+        return entities
+
     for ent in doc.ents:
         val = ent.text.strip()
         if not val or len(val) < 2:
@@ -76,14 +85,13 @@ def extract_entities(text: str) -> dict:
             entities["persons"].append(val)
         elif ent.label_ == "ORG":
             entities["organizations"].append(val)
-        elif ent.label_ == "LOC":
+        elif ent.label_ in ("LOC", "GPE"):
             entities["locations"].append(val)
         elif ent.label_ in ("DATE", "TIME"):
             entities["dates"].append(val)
 
-    # Déduplique
+    # Déduplique chaque liste
     for key in entities:
-        if isinstance(entities[key], list):
-            entities[key] = list(dict.fromkeys(entities[key]))
+        entities[key] = list(dict.fromkeys(entities[key]))
 
     return entities
