@@ -1,0 +1,58 @@
+Sophie Bernard
+Data Scientist | NLP Engineer
+sophie.bernard@email.com | +33 6 11 22 33 44 | LinkedIn : linkedin.com/in/sophie-bernard
+Paris, France
+
+─────────────────────────────────────────────────────────
+RÉSUMÉ
+─────────────────────────────────────────────────────────
+Data Scientist avec 4 ans d'expérience spécialisée en NLP et Deep Learning.
+Passionnée par les transformers et les LLM. Expérience en production de
+modèles d'IA sur des architectures cloud et on-premise.
+
+─────────────────────────────────────────────────────────
+COMPÉTENCES
+─────────────────────────────────────────────────────────
+Langages        : Python (expert), SQL, Bash
+Frameworks ML   : PyTorch, TensorFlow, scikit-learn, HuggingFace
+NLP / LLM       : BERT, CamemBERT, GPT, sentence-transformers, spaCy
+MLOps           : Docker, Kubernetes, MLflow, FastAPI, GitHub Actions
+Bases de données: PostgreSQL, MongoDB, Redis
+Cloud           : AWS (SageMaker, S3, Lambda), GCP
+
+─────────────────────────────────────────────────────────
+EXPÉRIENCE PROFESSIONNELLE
+─────────────────────────────────────────────────────────
+NLP Engineer — DataInsight SAS, Paris                     2022 – 2024
+  • Fine-tuning de CamemBERT pour la classification de tickets SAV (F1 : 0.91)
+  • Développement d'un pipeline de résumé automatique de documents juridiques
+  • Mise en production via FastAPI + Docker + Kubernetes (< 200ms latence p99)
+  • Réduction du temps de traitement manuel de 60 %
+
+Data Scientist — StartupAI, Lyon                          2020 – 2022
+  • Modèles de recommandation (collaborative filtering, content-based)
+  • Analyse de sentiment sur données Twitter (99 k tweets/jour)
+  • Construction d'un pipeline ETL PySpark pour le data lake S3
+
+─────────────────────────────────────────────────────────
+FORMATION
+─────────────────────────────────────────────────────────
+Master 2 Intelligence Artificielle                        2020
+  Université Paris-Saclay — Mention Très Bien
+
+Licence Mathématiques-Informatique                        2018
+  Université Paris-Diderot
+
+─────────────────────────────────────────────────────────
+LANGUES
+─────────────────────────────────────────────────────────
+Français (langue maternelle) | Anglais (C1, courant) | Espagnol (B2)
+
+─────────────────────────────────────────────────────────
+CERTIFICATIONS & PROJETS
+─────────────────────────────────────────────────────────
+AWS Certified Machine Learning – Specialty (2023)
+Deep Learning Specialization — Coursera / DeepLearning.AI (2021)
+
+Projet open-source : cv-nlp-analyzer (GitHub)
+  Outil d'analyse automatique de CV par NLP — sentence-transformers + spaCy

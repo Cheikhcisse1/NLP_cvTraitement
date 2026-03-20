@@ -1,0 +1,35 @@
+Data Scientist NLP — Poste en CDI, Paris
+
+NOTRE ENTREPRISE
+TechVision est une scale-up spécialisée dans l'intelligence artificielle appliquée
+aux données textuelles. Nous développons des solutions d'analyse automatique
+de documents pour des clients grands comptes (banques, assurances, cabinets juridiques).
+
+LE POSTE
+Nous recherchons un(e) Data Scientist / NLP Engineer confirmé(e) pour renforcer
+notre équipe R&D de 8 personnes.
+
+MISSIONS
+  • Conception et entraînement de modèles NLP (classification, NER, résumé automatique)
+  • Fine-tuning de modèles transformers (BERT, CamemBERT, RoBERTa) sur données métier
+  • Développement et mise en production d'APIs d'inférence (FastAPI, Docker, Kubernetes)
+  • Amélioration continue des performances (benchmarking, A/B tests)
+  • Collaboration avec les équipes produit et données
+
+PROFIL RECHERCHÉ
+  • 3+ ans d'expérience en Data Science ou NLP Engineering
+  • Expertise Python (pandas, scikit-learn, PyTorch ou TensorFlow)
+  • Bonne maîtrise des architectures transformers (HuggingFace, sentence-transformers)
+  • Expérience de déploiement de modèles ML en production (Docker, CI/CD)
+  • Connaissance de SQL et des bases de données (PostgreSQL, MongoDB)
+  • Niveau d'anglais professionnel (C1 minimum)
+
+BONUS APPRÉCIÉS
+  • Expérience avec les LLM (GPT, Llama, Mistral) et le fine-tuning RLHF
+  • Contributions open-source ou publications académiques
+  • Expérience cloud AWS ou GCP
+
+PACKAGE
+  • CDI — Rémunération : 55-75 k€ selon profil
+  • Télétravail 3j/semaine
+  • Mutuelle premium, tickets restaurant, RTT
