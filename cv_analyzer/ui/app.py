@@ -72,7 +72,12 @@ if result:
     # ── VERDICT ──────────────────────────────────────────────────────────────
     with st.container():
         st.markdown(f"""
-        <div style="padding:20px;border-radius:10px;background:#eef;">
+        <div style="
+            padding:20px;
+            border-radius:10px;
+            background:#0f1117;   /* fond noir / dark */
+            color:white;           /* texte en blanc */
+        ">
             <h3>{m.verdict.upper()} — {int(m.score_pondere*100)}%</h3>
             <p>{m.explication}</p>
         </div>
@@ -91,7 +96,15 @@ if result:
     skills = result.entities.get("skills_tech", [])
     if skills:
         with st.container():
-            tags = " ".join([f"<span style='padding:5px;background:#dfd;border-radius:5px'>{s}</span>" for s in skills])
+            tags = " ".join([
+                f"<span style='padding:5px 10px;"
+                f"background:#1f2937;"       # gris très sombre
+                f"color:white;"              # texte blanc
+                f"border-radius:5px;"
+                f"margin:2px;"
+                f"display:inline-block;'>{s}</span>"
+                for s in skills
+            ])
             st.markdown(tags, unsafe_allow_html=True)
 
     # ── SECTIONS ─────────────────────────────────────────────────────────────
