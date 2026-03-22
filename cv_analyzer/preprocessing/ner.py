@@ -7,11 +7,12 @@ from __future__ import annotations
 
 import re
 from loguru import logger
+from typing import Optional, Dict, List, Any
 
 
 # ── Patterns compétences techniques (regex pur Python — sans spaCy REGEX) ────
 
-_TECH_PATTERN = re.compile(
+_TECH_PATTERN: re.Pattern = re.compile(
     r"\b(Python|JavaScript|TypeScript|Java|C\+\+|Go|Rust|PHP|Ruby|Swift|Kotlin"
     r"|React|Angular|Vue|NodeJS|Node\.js|Django|Flask|FastAPI|Spring|Laravel"
     r"|TensorFlow|PyTorch|Scikit.learn|Keras|HuggingFace|BERT|GPT|LLM"
@@ -25,9 +26,9 @@ _TECH_PATTERN = re.compile(
 
 # ── Chargement du modèle spaCy (essaie sm puis lg) ───────────────────────────
 
-_nlp_cache = None
+_nlp_cache: Optional[Any] = None
 
-def _get_nlp():
+def _get_nlp() -> Optional[Any]:
     global _nlp_cache
     if _nlp_cache is not None:
         return _nlp_cache
@@ -48,13 +49,13 @@ def _get_nlp():
 
 # ── Extraction ────────────────────────────────────────────────────────────────
 
-def extract_entities(text: str) -> dict:
+def extract_entities(text: str) -> Dict[str, List[str]]:
     """
     Extrait les entités d'un CV.
     - skills_tech   : regex Python (toujours actif, indépendant de spaCy)
     - persons / organizations / locations / dates : spaCy NER
     """
-    entities: dict = {
+    entities: Dict[str, List[str]] = {
         "persons":       [],
         "organizations": [],
         "locations":     [],
